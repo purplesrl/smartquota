@@ -1,0 +1,7 @@
+---
+supported_distros: ["Ubuntu", "Debian"]
+dovecot_package: "dovecot-core"
+warning_script: "quota-warning.py"
+bin_dir: "/usr/local/bin"
+warning_threshold: "82"
+dovecot_conf_d: "/etc/dovecot/conf.d/99999-smartquota.conf"

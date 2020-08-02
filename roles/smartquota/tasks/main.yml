@@ -1,0 +1,31 @@
+---
+- name: "Fail if the distribution is not supported"
+  fail: 
+    msg: "Supported distributions are: {{ supported_distros }}"
+  when: "ansible_distribution not in supported_distros"
+
+- name: "Check if dovecot is installed"
+  package_facts:
+    manager: "auto"
+
+- name: "Fail if dovecot is not installed"
+  fail: 
+    msg: "dovecot was not found on this system"
+  when: "'dovecot-core' not in ansible_facts.packages"
+
+- name: "Generate warning script"
+  template:
+    src: "quota-warning.j2"
+    dest: "{{ bin_dir }}/{{ warning_script }}"
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: "Generate conf.d quota rules"
+  template:
+    src: "smartquota.j2"
+    dest: "{{ dovecot_conf_d }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: "restart dovecot"

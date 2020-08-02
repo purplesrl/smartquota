@@ -1,0 +1,13 @@
+plugin {
+  quota_warning = storage={{ warning_threshold }}%% quota-warning {{ warning_threshold }} %u
+}
+
+service quota-warning {
+  executable = script {{ bin_dir }}/{{ warning_script }}
+  user = vmail
+  unix_listener quota-warning {
+    group = mail
+    user = vmail
+    mode = 0666
+  }
+}
